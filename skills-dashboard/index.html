@@ -1,1 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills Ecosystem Dashboard — Ronen Keisar</title>
+<style>
+  :root {
+    --charcoal: #2B2B2B;
+    --turquoise: #1BA8A0;
+    --slate: #5A6B7B;
+    --ivory: #F7F5F0;
+    --deep-blue: #1A2A66;
+    --green: #1E9E5A;
+    --card-bg: #FFFFFF;
+    --border: #E4E0D8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--ivory);
+    color: var(--charcoal);
+    line-height: 1.5;
+    padding: 32px 24px 64px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  header.page { margin-bottom: 8px; }
+  h1 { font-size: 28px; color: var(--deep-blue); font-weight: 700; letter-spacing: -0.3px; }
+  .subtitle { color: var(--slate); font-size: 15px; margin-top: 4px; margin-bottom: 28px; }
+  .summary-bar { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 34px; }
+  .stat { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; min-width: 120px; }
+  .stat .num { font-size: 24px; font-weight: 700; color: var(--turquoise); }
+  .stat .lbl { font-size: 12px; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
 
+  .ecosystem { margin-bottom: 36px; }
+  .eco-head { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .eco-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .eco-title { font-size: 19px; font-weight: 700; color: var(--deep-blue); }
+  .eco-tag { font-size: 13px; color: var(--slate); font-weight: 400; }
+  .eco-count { margin-left: auto; font-size: 12px; color: var(--slate); background: var(--ivory); border: 1px solid var(--border); border-radius: 20px; padding: 3px 12px; }
+  .eco-desc { font-size: 13.5px; color: var(--slate); margin: 10px 0 16px; max-width: 760px; font-style: italic; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; border-left: 4px solid var(--turquoise); transition: box-shadow 0.15s, transform 0.15s; }
+  .card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); transform: translateY(-1px); }
+  .card.updated-today { border-left-color: var(--green); }
+  .card-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+  .skill-name { font-size: 17px; font-weight: 700; color: var(--charcoal); }
+  .badge-new { font-size: 10px; font-weight: 700; color: #fff; background: var(--green); border-radius: 4px; padding: 2px 7px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .skill-desc { font-size: 13.5px; color: var(--slate); margin-bottom: 12px; }
+  .card-meta { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--slate); border-top: 1px solid var(--border); padding-top: 9px; }
+  .updated-val { font-weight: 600; color: var(--charcoal); }
+  footer.page { margin-top: 30px; font-size: 12px; color: var(--slate); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="page">
+    <h1>Skills Ecosystem Dashboard</h1>
+    <div class="subtitle">Live inventory of active Claude skills, organized by ecosystem · Updated June 27, 2026</div>
+  </header>
+
+  <div class="summary-bar">
+    <div class="stat"><div class="num">13</div><div class="lbl">Active Skills</div></div>
+    <div class="stat"><div class="num">5</div><div class="lbl">Ecosystems</div></div>
+    <div class="stat"><div class="num">4</div><div class="lbl">Updated Today</div></div>
+  </div>
+
+  <!-- ORBIT -->
+  <section class="ecosystem">
+    <div class="eco-head">
+      <span class="eco-dot" style="background:var(--turquoise)"></span>
+      <span class="eco-title">Orbit</span>
+      <span class="eco-tag">Job Search</span>
+      <span class="eco-count">4 skills</span>
+    </div>
+    <div class="eco-desc">The job-search engine. Evaluates roles, tailors the CV, runs networking outreach, and scans the market daily — a coordinated pipeline that moves an opportunity from "spotted" to "applied" with judgment at every gate.</div>
+    <div class="cards">
+      <div class="card updated-today">
+        <div class="card-top"><span class="skill-name">Eva</span><span class="badge-new">Updated</span></div>
+        <div class="skill-desc">Evaluates how well a role fits, scoring two independent tracks (Recruiter Fit + Personal Fit) and logging a verdict to the Seen Jobs pipeline.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">June 27, 2026</span></div>
+      </div>
+      <div class="card updated-today">
+        <div class="card-top"><span class="skill-name">Taylor</span><span class="badge-new">New</span></div>
+        <div class="skill-desc">Tailors the CV to a specific JD: keyword gap analysis, positioning angle, surgical edits, and a ready-to-submit Google Doc.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">June 27, 2026</span></div>
+      </div>
+      <div class="card updated-today">
+        <div class="card-top"><span class="skill-name">Reachie</span><span class="badge-new">Updated</span></div>
+        <div class="skill-desc">Generates and refines networking outreach across LinkedIn, email, and WhatsApp; tracks each thread through the response lifecycle.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">June 27, 2026</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="skill-name">Daily LinkedIn Job Scan</span></div>
+        <div class="skill-desc">Scans LinkedIn each day, evaluates fit, and emails a shortlist of the strongest matches.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">June 16, 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNAL -->
+  <section class="ecosystem">
+    <div class="eco-head">
+      <span class="eco-dot" style="background:var(--deep-blue)"></span>
+      <span class="eco-title">Signal</span>
+      <span class="eco-tag">Brand & LinkedIn Presence</span>
+      <span class="eco-count">2 skills</span>
+    </div>
+    <div class="eco-desc">The public voice. Shapes how Ronen shows up on LinkedIn — original thought leadership and engagement with others — keeping every post consistent with the "Don't Adapt, Scale" brand.</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top"><span class="skill-name">LinkedIn Engagement</span></div>
+        <div class="skill-desc">Writes recommendations, congratulations, reposts, and comments on others' content in Ronen's voice.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">March 11, 2026</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="skill-name">LinkedIn Personal Posts</span></div>
+        <div class="skill-desc">Drafts and reviews original thought-leadership posts and subtle job-search positioning content.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">June 14, 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECHO -->
+  <section class="ecosystem">
+    <div class="eco-head">
+      <span class="eco-dot" style="background:#C77D3A"></span>
+      <span class="eco-title">Echo</span>
+      <span class="eco-tag">Reviews & Feedback</span>
+      <span class="eco-count">1 skill</span>
+    </div>
+    <div class="eco-desc">The reviews archive. Turns rough notes into polished reviews and files them for the record — every experience worth remembering, captured in Ronen's voice.</div>
+    <div class="cards">
+      <div class="card updated-today">
+        <div class="card-top"><span class="skill-name">Echo</span><span class="badge-new">Updated</span></div>
+        <div class="skill-desc">Enhances and logs reviews (restaurants, hotels, colleagues, professionals, online purchases) to an Airtable archive.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">June 27, 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VITALS -->
+  <section class="ecosystem">
+    <div class="eco-head">
+      <span class="eco-dot" style="background:var(--green)"></span>
+      <span class="eco-title">Vitals</span>
+      <span class="eco-tag">Health & Nutrition</span>
+      <span class="eco-count">1 skill</span>
+    </div>
+    <div class="eco-desc">The body's operating system. Tracks nutrition, weight, and sleep against a structured plan, keeping the day-to-day choices aligned with the longer-term reset goals.</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top"><span class="skill-name">Distill</span></div>
+        <div class="skill-desc">Personal nutrition advisor and weight-reset coach: logs meals, tracks calories and macros, monitors sleep and weight trends.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">June 15, 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOMUS -->
+  <section class="ecosystem">
+    <div class="eco-head">
+      <span class="eco-dot" style="background:var(--slate)"></span>
+      <span class="eco-title">Domus</span>
+      <span class="eco-tag">Life Admin & Finance</span>
+      <span class="eco-count">5 skills</span>
+    </div>
+    <div class="eco-desc">The household back office. Handles money, medical claims, and travel — the recurring life-admin work that keeps the home running, organized and off Ronen's mental load.</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top"><span class="skill-name">Personal Financial Advisor</span></div>
+        <div class="skill-desc">Runs household financial reviews: cash flow, RSU strategy, mortgage planning, and an interactive dashboard refresh.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">March 15, 2026</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="skill-name">Monthly Credit Analysis</span></div>
+        <div class="skill-desc">Parses Israeli credit-card exports, categorizes charges in Hebrew, and produces an RTL PDF expense report.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">March 13, 2026</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="skill-name">Dorbit Medical Tracker</span></div>
+        <div class="skill-desc">Tracks medical expenses, Dorbit insurance claims, and Migdal refunds in a dedicated Airtable base.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">April 12, 2026</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="skill-name">Family Trip Architect</span></div>
+        <div class="skill-desc">Plans family trips for Ronen, Dana, and the kids: activities, logistics, accommodation, and day-by-day itineraries.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">April 29, 2026</span></div>
+      </div>
+      <div class="card">
+        <div class="card-top"><span class="skill-name">Business Trip Architect</span></div>
+        <div class="skill-desc">Plans high-impact work trips: live event radar, TLV-based routing, itineraries, and manager approval summaries.</div>
+        <div class="card-meta">Last updated: <span class="updated-val">March 13, 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="page">
+    Skills Ecosystem Dashboard · Maintained by Ronen Keisar · Updated June 27, 2026
+  </footer>
+</div>
+</body>
+</html>
