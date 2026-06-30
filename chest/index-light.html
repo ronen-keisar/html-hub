@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chest — Keisar Family Financial Review (High Contrast Light)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:       #FFFFFF;
+  --surface:  #FAF5F7;
+  --border:   #D4A8C4;
+  --header:   #831843;
+  --accent:   #0369A1;
+  --green:    #047857;
+  --red:      #BE185D;
+  --amber:    #92400E;
+  --text:     #1A0E1C;
+  --muted:    #5C3D54;
+  --dim:      #7A5570;
+  --surface2: #F3E4EC;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.5; }
+
+header { background: var(--header); padding: 20px 36px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); }
+.logo-row { display: flex; align-items: center; gap: 12px; }
+.logo-icon { font-size: 1.4rem; }
+.logo-text h1 { font-family: 'Lora', serif; font-size: 1.35rem; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+.logo-text h1 span { color: #FBCFE8; }
+.logo-text .tag { font-size: 0.68rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.08em; }
+.header-right { text-align: right; font-size: 0.72rem; color: rgba(255,255,255,0.7); line-height: 1.8; }
+.header-right strong { color: #fff; }
+.header-right a { color: #FBCFE8; text-decoration: none; }
+
+.north-star { background: rgba(2,132,199,0.06); border-left: 2px solid var(--accent); padding: 10px 36px; font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
+main { padding: 24px 36px; max-width: 1280px; margin: 0 auto; }
+section { margin-bottom: 28px; }
+.section-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--header); margin-bottom: 10px; opacity: 0.85; }
+
+.kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; position: relative; box-shadow: 0 1px 3px rgba(131,24,67,0.06); }
+.kpi-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 8px 8px 0 0; }
+.kpi-label { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+.kpi-val { font-family: 'Lora', serif; font-size: 1.55rem; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.kpi-sub { font-size: 0.67rem; color: var(--muted); margin-bottom: 7px; }
+.badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; display: inline-block; font-weight: 600; }
+.bg-green { background: rgba(13,148,103,0.1); color: var(--green); }
+.bg-amber { background: rgba(184,118,61,0.1); color: var(--amber); }
+.bg-accent { background: rgba(2,132,199,0.1); color: var(--accent); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; box-shadow: 0 1px 4px rgba(131,24,67,0.05); }
+.panel-title { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 7px; }
+.panel-icon { color: var(--header); }
+
+.ch220 { position: relative; height: 220px; }
+.ch180 { position: relative; height: 180px; }
+.ch160 { position: relative; height: 160px; }
+
+.dtable { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.dtable th { text-align: left; padding: 5px 8px 8px; color: var(--dim); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 1px solid var(--border); }
+.dtable td { padding: 8px; border-bottom: 1px solid #F3E4EC; color: var(--text); vertical-align: middle; }
+.dtable tr:last-child td { border-bottom: none; }
+.dtable .foot td { font-weight: 700; border-top: 1px solid var(--border); padding-top: 10px; }
+.c-green { color: var(--green); } .c-red { color: var(--red); } .c-amber { color: var(--amber); } .c-accent { color: var(--accent); }
+
+.prog-wrap { margin-bottom: 16px; }
+.prog-label { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted); margin-bottom: 5px; }
+.prog-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; }
+
+.rsu-layout { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: center; }
+.rsu-stat { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; padding: 6px 0; border-bottom: 1px solid #F3E4EC; }
+.rsu-stat:last-child { border-bottom: none; }
+.rsu-label { color: var(--muted); }
+.rsu-val { font-weight: 600; }
+
+.bench-strip { display: flex; gap: 28px; padding: 10px 16px; background: var(--surface2); border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; font-size: 0.71rem; flex-wrap: wrap; }
+.bench-item { display: flex; align-items: center; gap: 6px; }
+.bench-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+.timeline { display: flex; flex-direction: column; }
+.ev { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid #F3E4EC; align-items: flex-start; }
+.ev:last-child { border-bottom: none; }
+.ev-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.ev-date { font-size: 0.64rem; color: var(--dim); width: 64px; flex-shrink: 0; line-height: 1.4; }
+.ev-body { flex: 1; font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+.ev-body strong { color: var(--text); font-weight: 600; }
+.ev-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 3px; margin-left: 5px; font-weight: 700; vertical-align: middle; white-space: nowrap; }
+
+.nw-tabs { display: flex; gap: 2px; margin-bottom: 14px; }
+.nw-tab { padding: 5px 14px; border-radius: 5px; font-size: 0.72rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; }
+.nw-tab.active { background: var(--header); color: #fff; border-color: var(--header); }
+.nw-view { display: none; }
+.nw-view.active { display: block; }
+.nw-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #F3E4EC; font-size: 0.78rem; }
+.nw-row:last-child { border-bottom: none; }
+.nw-cat { color: var(--muted); }
+.nw-amt { font-weight: 600; }
+.nw-divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+.nw-total { display: flex; justify-content: space-between; padding: 10px 0 4px; font-size: 0.88rem; font-weight: 700; font-family: 'Lora', serif; }
+.nw-note { font-size: 0.64rem; color: var(--dim); margin-top: 5px; line-height: 1.5; }
+
+.signal-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; margin-bottom: 14px; background: rgba(184,118,61,0.1); border: 1px solid rgba(184,118,61,0.25); color: var(--amber); }
+.ns-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; font-size: 0.75rem; }
+.ns-lbl { width: 76px; color: var(--muted); flex-shrink: 0; }
+.ns-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.ns-fill { height: 100%; border-radius: 4px; }
+.ns-amt { width: 86px; text-align: right; font-weight: 600; font-size: 0.72rem; }
+.ns-note { margin-top: 12px; font-size: 0.71rem; color: var(--muted); line-height: 1.65; }
+
+.items-list { list-style: none; }
+.items-list li { display: flex; gap: 9px; padding: 8px 0; border-bottom: 1px solid #F3E4EC; font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+.items-list li:last-child { border-bottom: none; }
+.items-list li .arr { color: var(--header); flex-shrink: 0; font-weight: 700; }
+
+footer { background: var(--header); border-top: 2px solid var(--accent); padding: 13px 36px; display: flex; justify-content: space-between; align-items: center; font-size: 0.66rem; color: rgba(255,255,255,0.65); }
+footer a { color: #FBCFE8; text-decoration: none; }
+
+@media(max-width:900px) { header, main, footer { padding-left:18px; padding-right:18px; } .kpi-strip,.two-col,.rsu-layout { grid-template-columns:1fr 1fr; } }
+@media(max-width:600px) { .kpi-strip,.two-col,.rsu-layout { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-row">
+    <div class="logo-icon">🏴‍☠️</div>
+    <div class="logo-text">
+      <h1>Keisar Family <span>Chest</span></h1>
+      <div class="tag">Financial Review · Dig</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div><strong>Jun 28, 2026</strong> · Full Dig</div>
+    <div>Next Dig: <strong>Jul 12, 2026</strong></div>
+    <div><a href="https://ronencaesars-team.monday.com/boards/5099328389" target="_blank">Cosmo Board ↗</a></div>
+  </div>
+</header>
+
+<div class="north-star">
+  Our family goal is to reach a state where our monthly income exceeds the expenses, allowing us to reduce the mortgage and increase our savings. Once Ronen's job situation stabilizes, I will use some of the RSUs to knock down the mortgage.
+</div>
+
+<main>
+
+  <section>
+    <div class="section-label">At a Glance</div>
+    <div class="kpi-strip">
+      <div class="kpi"><div class="kpi-bar" style="background:var(--red)"></div><div class="kpi-label">Avg Monthly Deficit</div><div class="kpi-val c-red">-7,934</div><div class="kpi-sub">NIS · last 3 months avg</div><span class="badge bg-green">💚 Live</span></div>
+      <div class="kpi"><div class="kpi-bar" style="background:var(--red)"></div><div class="kpi-label">Liquid Today</div><div class="kpi-val c-red">-13,967</div><div class="kpi-sub">NIS · current account</div><span class="badge bg-amber">+₪19K incoming</span></div>
+      <div class="kpi"><div class="kpi-bar" style="background:var(--accent)"></div><div class="kpi-label">RSU Sellable</div><div class="kpi-val c-accent">$499K</div><div class="kpi-sub">~₪1.84M gross · 1,642 shares</div><span class="badge bg-green">💚 PANW $303</span></div>
+      <div class="kpi"><div class="kpi-bar" style="background:var(--amber)"></div><div class="kpi-label">Net Worth</div><div class="kpi-val c-amber">₪7.9M</div><div class="kpi-sub">incl. property est. ₪6.2M</div><span class="badge bg-amber">🌅 Recent</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Last 3 Months — CC Charges vs Income</div>
+    <div class="panel" style="border-radius:8px 8px 0 0;border-bottom:none;padding-bottom:16px;">
+      <div class="ch220"><canvas id="trendChart" role="img" aria-label="Bar chart comparing credit card charges to income for April, May, and June 2026"></canvas></div>
+    </div>
+    <div class="bench-strip">
+      <div class="bench-item"><div class="bench-dot" style="background:var(--red)"></div><span style="color:var(--muted)">CC 12-mo avg:</span><span class="c-red" style="font-weight:600">₪47,207/mo</span><span style="color:var(--dim)">(range ₪30K–₪58K, ex RSU months)</span></div>
+      <div class="bench-item"><div class="bench-dot" style="background:var(--green)"></div><span style="color:var(--muted)">Combined salary avg:</span><span class="c-green" style="font-weight:600">₪47,000/mo</span><span style="color:var(--dim)">(both employed, ex RSU months)</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-title"><span class="panel-icon">◈</span> RSU Breakdown</div>
+        <div class="rsu-layout">
+          <div class="ch180"><canvas id="rsuDonut" role="img" aria-label="Donut chart showing RSU breakdown: 1642 sellable shares, 1747 unvested shares, 90 locked shares"></canvas></div>
+          <div>
+            <div class="rsu-stat"><span class="rsu-label">PANW Price</span><span class="rsu-val c-accent">$303.40</span></div>
+            <div class="rsu-stat"><span class="rsu-label">Sellable gross</span><span class="rsu-val">~$499,496</span></div>
+            <div class="rsu-stat"><span class="rsu-label">Net after 25% tax</span><span class="rsu-val c-green">~$374,622</span></div>
+            <div class="rsu-stat"><span class="rsu-label">In NIS (~3.68)</span><span class="rsu-val c-green">~₪1.38M</span></div>
+            <div class="rsu-stat"><span class="rsu-label">🔒 Locked (trustee)</span><span class="rsu-val c-amber">90 shares</span></div>
+            <div class="rsu-stat"><span class="rsu-label">Next vest</span><span class="rsu-val">May 15, 2027 ⚠️</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title"><span class="panel-icon">◈</span> Mortgage Tracker</div>
+        <div class="prog-wrap">
+          <div class="prog-label"><span class="c-green">Paid off: ₪1.29M (43.6%)</span><span>Remaining: ₪1.67M</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:43.6%;background:var(--green)"></div></div>
+        </div>
+        <table class="dtable">
+          <thead><tr><th>Track</th><th>Balance</th><th>Rate</th><th>Risk</th></tr></thead>
+          <tbody>
+            <tr><td>Fixed non-linked</td><td>₪664,417</td><td>4.64%</td><td class="c-green">🟢 Safe</td></tr>
+            <tr><td>CPI-linked (5yr)</td><td>₪494,343</td><td>5.41%</td><td class="c-amber">🟡 Medium</td></tr>
+            <tr><td>⭐ Prime rate</td><td>₪217,647</td><td>4.82%</td><td class="c-red">🔴 Priority</td></tr>
+            <tr><td>CPI-linked (ann.)</td><td>₪296,198</td><td>5.51%</td><td class="c-amber">🟡 Medium</td></tr>
+          </tbody>
+          <tfoot><tr class="foot"><td>Total</td><td>₪1,669,843</td><td>~9,260/mo</td><td></td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-title"><span class="panel-icon">◈</span> Net Worth Snapshot</div>
+        <div class="nw-tabs">
+          <button class="nw-tab active" onclick="showNW('full',event)" aria-pressed="true">With Property</button>
+          <button class="nw-tab" onclick="showNW('liquid',event)" aria-pressed="false">Liquid Only</button>
+        </div>
+        <div id="nw-full" class="nw-view active">
+          <div style="font-size:0.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">Assets</div>
+          <div class="nw-row"><span class="nw-cat">Property (Tavas 12B, est.)</span><span class="nw-amt c-amber">~₪6,200,000 ⚠️</span></div>
+          <div class="nw-row"><span class="nw-cat">RSU sellable (net 25% tax)</span><span class="nw-amt c-green">₪1,377,000</span></div>
+          <div class="nw-row"><span class="nw-cat">Ronen pension + gemel</span><span class="nw-amt">₪1,232,412</span></div>
+          <div class="nw-row"><span class="nw-cat">Dana pension + savings</span><span class="nw-amt">₪851,644</span></div>
+          <div class="nw-row"><span class="nw-cat">RSU unvested (conditional)</span><span class="nw-amt" style="color:var(--dim)">₪1,953,000 ⚠️</span></div>
+          <div class="nw-row"><span class="nw-cat">Bank balance</span><span class="nw-amt c-red">-₪13,967</span></div>
+          <hr class="nw-divider">
+          <div style="font-size:0.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">Liabilities</div>
+          <div class="nw-row"><span class="nw-cat">Mortgage</span><span class="nw-amt c-red">-₪1,669,843</span></div>
+          <div class="nw-row"><span class="nw-cat">Personal loan</span><span class="nw-amt c-red">-₪31,125</span></div>
+          <div class="nw-row"><span class="nw-cat">CC upcoming</span><span class="nw-amt c-red">-₪22,908</span></div>
+          <hr class="nw-divider">
+          <div class="nw-total"><span>Net Worth</span><span class="c-green">₪7,923,213</span></div>
+          <div class="nw-note">Property: purchased ₪5.65M (Dec 2024), est. ₪6.2M today. Home equity ~₪4.53M. 🍞 Pension Mar 2026. Unvested RSUs excluded.</div>
+          <div class="ch160" style="margin-top:14px"><canvas id="nwFull" role="img" aria-label="Donut chart showing net worth breakdown including property, RSU, pensions, and liabilities"></canvas></div>
+        </div>
+        <div id="nw-liquid" class="nw-view">
+          <div style="font-size:0.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">Liquid &amp; Semi-liquid Assets</div>
+          <div class="nw-row"><span class="nw-cat">RSU sellable (net 25% tax)</span><span class="nw-amt c-green">₪1,377,000</span></div>
+          <div class="nw-row"><span class="nw-cat">Ronen pension + gemel</span><span class="nw-amt">₪1,232,412</span></div>
+          <div class="nw-row"><span class="nw-cat">Dana pension + savings</span><span class="nw-amt">₪851,644</span></div>
+          <div class="nw-row"><span class="nw-cat">Bank balance</span><span class="nw-amt c-red">-₪13,967</span></div>
+          <hr class="nw-divider">
+          <div style="font-size:0.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px">Liabilities</div>
+          <div class="nw-row"><span class="nw-cat">Mortgage</span><span class="nw-amt c-red">-₪1,669,843</span></div>
+          <div class="nw-row"><span class="nw-cat">Personal loan</span><span class="nw-amt c-red">-₪31,125</span></div>
+          <div class="nw-row"><span class="nw-cat">CC upcoming</span><span class="nw-amt c-red">-₪22,908</span></div>
+          <hr class="nw-divider">
+          <div class="nw-total"><span>Liquid Net Worth</span><span class="c-green">₪1,723,213</span></div>
+          <div class="nw-note">Excludes property and unvested RSUs. Accessible without selling your home.</div>
+          <div class="ch160" style="margin-top:14px"><canvas id="nwLiquid" role="img" aria-label="Donut chart showing liquid net worth excluding property"></canvas></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><span class="panel-icon">◈</span> Upcoming Events</div>
+        <div class="timeline">
+          <div class="ev"><div class="ev-dot" style="background:var(--amber)"></div><div class="ev-date">Jul 2<br>2026</div><div class="ev-body"><strong>CC charges hit account</strong> — ~₪22,908 due<span class="ev-tag" style="background:rgba(184,118,61,0.12);color:var(--amber)">Cash gap</span></div></div>
+          <div class="ev"><div class="ev-dot" style="background:var(--green)"></div><div class="ev-date">Jul 2026<br>This week</div><div class="ev-body"><strong>Gemel withdrawal lands</strong> — ~₪19,000 net<span class="ev-tag" style="background:rgba(13,148,103,0.12);color:var(--green)">+₪19K</span></div></div>
+          <div class="ev"><div class="ev-dot" style="background:var(--accent)"></div><div class="ev-date">Aug 2026</div><div class="ev-body"><strong>Romania family trip</strong> — 2 weeks, flights covered<span class="ev-tag" style="background:rgba(184,118,61,0.12);color:var(--amber)">-₪17,500</span></div></div>
+          <div class="ev"><div class="ev-dot" style="background:var(--red);box-shadow:0 0 6px rgba(219,39,119,0.35)"></div><div class="ev-date">Aug 31<br>2026</div><div class="ev-body"><strong>PANW employment decision</strong> — 1,747 unvested shares at stake (~$530K)<span class="ev-tag" style="background:rgba(219,39,119,0.12);color:var(--red)">Critical</span></div></div>
+          <div class="ev"><div class="ev-dot" style="background:var(--accent)"></div><div class="ev-date">Sep 2026</div><div class="ev-body"><strong>School fees step-up</strong> — Agam joins, total ₪2,725/mo (+₪275)</div></div>
+          <div class="ev"><div class="ev-dot" style="background:var(--green)"></div><div class="ev-date">Oct 2026</div><div class="ev-body"><strong>Installment load drops</strong> — ~₪3,200/month freed<span class="ev-tag" style="background:rgba(13,148,103,0.12);color:var(--green)">+₪3,200/mo</span></div></div>
+          <div class="ev"><div class="ev-dot" style="background:var(--red);box-shadow:0 0 6px rgba(219,39,119,0.35)"></div><div class="ev-date">Mar 31<br>2027</div><div class="ev-body"><strong>Severance continuity deadline</strong> — must have new employer or lose ₪216,649<span class="ev-tag" style="background:rgba(219,39,119,0.12);color:var(--red)">Hard deadline</span></div></div>
+          <div class="ev"><div class="ev-dot" style="background:var(--green)"></div><div class="ev-date">May 15<br>2027</div><div class="ev-body"><strong>RSU vesting</strong> — 1,033 shares (~$314K at current price)<span class="ev-tag" style="background:rgba(13,148,103,0.12);color:var(--green)">If employed</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-title"><span class="panel-icon">◈</span> North Star Progress</div>
+        <div class="signal-badge">🟡 Mixed — gap narrowing</div>
+        <div class="ns-row"><div class="ns-lbl">Income</div><div class="ns-track"><div class="ns-fill" style="width:100%;background:var(--green)"></div></div><div class="ns-amt c-green">₪46,058</div></div>
+        <div class="ns-row"><div class="ns-lbl">CC spend</div><div class="ns-track"><div class="ns-fill" style="width:119%;background:var(--red)"></div></div><div class="ns-amt c-red">₪54,934</div></div>
+        <div class="ns-row"><div class="ns-lbl">Gap (Jun)</div><div class="ns-track"><div class="ns-fill" style="width:19%;background:var(--amber)"></div></div><div class="ns-amt c-amber">-₪8,876</div></div>
+        <div class="ns-note">CC avg ₪47K/month over last 12 months (ex RSU months).<br>Installments drop ~₪3,200/month by Oct 2026.<br>RSU + mortgage paydown will structurally close the gap.</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title"><span class="panel-icon">◈</span> Open Items</div>
+        <ul class="items-list">
+          <li><span class="arr">→</span>RSU sale proceeds (~$25K) held by ESOP Trustee — pending CyberArk/PANW ruling</li>
+          <li><span class="arr">→</span>Gemel withdrawal ~₪19K in transit — filed Jun 24, expected this week</li>
+          <li><span class="arr">→</span>Dana inactive gemel (₪151K) — idle since Dec 2023, consolidate</li>
+          <li><span class="arr">→</span>Severance continuity deadline — must have new employer by Mar 31, 2027</li>
+          <li><span class="arr">→</span>Prime track payoff (₪217K) — execute once employment stable + RSU released</li>
+          <li><span class="arr">→</span>Property value — confirm with appraiser for accurate net worth figure</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>💚 Live Jun 28, 2026 &nbsp;·&nbsp; 🌅 Recent: mortgage, income &nbsp;·&nbsp; 🍞 Stale: pension (Mar 2026)</div>
+  <div>Chest · <a href="https://ronen-keisar.github.io/html-hub/chest/">Dashboard</a> · <a href="https://ronencaesars-team.monday.com/boards/5099328389">Cosmo Board</a></div>
+</footer>
+
+<script>
+const G = 'rgba(131,24,67,0.08)';
+const T = 'rgba(122,85,112,0.75)';
+const L = 'rgba(122,85,112,0.85)';
+
+new Chart(document.getElementById('trendChart').getContext('2d'),{type:'bar',data:{labels:['Apr 2026','May 2026','Jun 2026'],datasets:[{label:'Income',data:[43652,49512,46058],backgroundColor:'rgba(4,120,87,0.85)',borderRadius:4},{label:'CC Charges',data:[30637,52202,54934],backgroundColor:'rgba(190,24,93,0.75)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:L,font:{size:11},boxWidth:10,padding:14}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ₪${c.raw.toLocaleString()}`}}},scales:{x:{grid:{color:G},ticks:{color:T,font:{size:11}}},y:{grid:{color:G},ticks:{color:T,font:{size:10},callback:v=>'₪'+(v/1000).toFixed(0)+'K'}}}}});
+
+new Chart(document.getElementById('rsuDonut').getContext('2d'),{type:'doughnut',data:{labels:['Sellable','Unvested','🔒 Locked'],datasets:[{data:[1642,1747,90],backgroundColor:['#0369A1','#C9A8C0','#92400E'],borderColor:'#FFFFFF',borderWidth:3,hoverOffset:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:'64%',plugins:{legend:{position:'bottom',labels:{color:L,font:{size:9.5},padding:9,boxWidth:9}},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw.toLocaleString()} shares`}}}}});
+
+new Chart(document.getElementById('nwFull').getContext('2d'),{type:'doughnut',data:{labels:['Property (est.)','RSU sellable net','Ronen pension','Dana pension','Liabilities'],datasets:[{data:[6200000,1377000,1232412,851644,1723876],backgroundColor:['#92400E','#0369A1','#047857','rgba(4,120,87,0.5)','#BE185D'],borderColor:'#FFFFFF',borderWidth:2,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{color:L,font:{size:9},padding:7,boxWidth:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ₪${c.raw.toLocaleString()}`}}}}});
+
+new Chart(document.getElementById('nwLiquid').getContext('2d'),{type:'doughnut',data:{labels:['RSU sellable net','Ronen pension','Dana pension','Liabilities'],datasets:[{data:[1377000,1232412,851644,1723876],backgroundColor:['#0369A1','#047857','rgba(4,120,87,0.5)','#BE185D'],borderColor:'#FFFFFF',borderWidth:2,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{color:L,font:{size:9},padding:7,boxWidth:8}},tooltip:{callbacks:{label:c=>` ${c.label}: ₪${c.raw.toLocaleString()}`}}}}});
+
+function showNW(v,e){document.querySelectorAll('.nw-view').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nw-tab').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-pressed','false');});document.getElementById('nw-'+v).classList.add('active');e.target.classList.add('active');e.target.setAttribute('aria-pressed','true');}
+</script>
+</body>
+</html>
